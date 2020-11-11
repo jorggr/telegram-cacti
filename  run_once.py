@@ -1,0 +1,1 @@
+# Send all alerts to the new plugin_telegram_bot

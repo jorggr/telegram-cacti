@@ -1,26 +1,48 @@
-# Crear base de datos
+### Requirements
+
+- python3.x
+- pip
+
+#### Create Backup your_cacti_database
+
+#### Create new table
 
 ```sql
+USE your_cacti_database;
+
 CREATE TABLE IF NOT EXISTS plugin_telegram_bot (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     description varchar(255) NOT NULL,
-    plugin_thold_log_id INT NOT NULL,
-    telegram_date date default now()
+    plugin_thold_log_id INT NOT NULL
 );
-
-INSERT INTO plugin_telegram_bot (description, plugin_thold_log_id) VALUES ('MESSAGE', 999999999999999);
-
-SELECT plugin_thold_log.id, host.hostname, plugin_thold_log.description FROM plugin_thold_log INNER JOIN host ON host.id = plugin_thold_log.host_id WHERE plugin_thold_log.id NOT IN (SELECT plugin_thold_log_id FROM plugin_telegram_bot);
 ```
 
+```shell
+[user@localhost~]# pip install virtualenv
+[user@localhost~]# #cd ~ or cd /your/path
+[user@localhost~]# virtualenv -p python3 virtualenv
 ```
-https://core.telegram.org/bots/api#getme
 
-https://medium.com/@vipinc.007/python-a-database-interaction-class-using-pymysql-3338fb90f38c
+#### Clone this repository into your virtualenv
 
-https://pynative.com/python-mysql-select-query-to-fetch-data/
+```shell
+[user@localhost~]# cd /path/to/virtualenv/
+[user@localhost~]# git clone url_repo
+[user@localhost~]# cd /path/to/virtualenv/telegrambot-cacti
+[user@localhost~]# source /path/to/virtualenv/bin/activate
+[user@localhost~]# pip install -r requirement.txt
+[user@localhost~]# deactivate
+```
 
-https://pynative.com/python-mysql-insert-data-into-database-table/
+#### Create new file name .env into /path/to/virtualenv/telegrambot-cacti/ and changue values .env
 
-https://dev.mysql.com/doc/connector-python/en/connector-python-api-errors-error.html
+#### Create new cron / Execute every five minutes like poller.php cacti
+
+```shell
+[user@localhost~]# crontab -e
+
+*/5 * * * * sh /path/to/virtualenv/telegrambot-cacti/execute.sh
+
+[user@localhost~]# crontab -l
+*/5 * * * * sh /path/to/virtualenv/telegrambot-cacti/execute.sh
 ```
