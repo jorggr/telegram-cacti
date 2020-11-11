@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS plugin_telegram_bot (
 );
 ```
 
+#### Create your virtualenv
+
 ```shell
 [user@localhost~]# pip install virtualenv
 [user@localhost~]# #cd ~ or cd /your/path
