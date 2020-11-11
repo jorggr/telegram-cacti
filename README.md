@@ -2,6 +2,8 @@
 
 - python3.x
 - pip
+- Token Telegrambot
+- ID USER or GROUP Telegram
 
 #### Create Backup your_cacti_database
 
