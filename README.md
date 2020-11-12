@@ -55,4 +55,9 @@
 
 #### How do I create a bot? :sunglasses:
 
-[Create new bots with BotFather](https://core.telegram.org/bots#6-botfather)
+- Create new bot
+  [Create new bots with BotFather](https://core.telegram.org/bots#6-botfather)
+- Create new group
+- add new bot as administrator new group
+- get Token bot
+- get ID group
