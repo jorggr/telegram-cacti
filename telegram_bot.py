@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 class MonitorTelegram:
     def __init__(self):
         """
-        Inicializamos las variables
+        Initialize all variables
         """
         load_dotenv()
         self.host = os.getenv("HOST_DATABASE")
@@ -17,11 +17,11 @@ class MonitorTelegram:
         self.password = os.getenv("PASSWD_DATABASE")
         self.token = os.getenv("TOKEN_TELEGRAM")
         self.chat_id = os.getenv("GROUPID_TELEGRAM")
+        self.message = "Something went wrong:"
 
     def connect(self):
         """
-        Creamos la conexión pasando los parametros de las
-        variable virtuales
+        Create the connection passing the parameters
         """
         try:
             self.connection = mysql_connector.connect(
@@ -32,31 +32,31 @@ class MonitorTelegram:
             )
             self.cursor = self.connection.cursor()
         except mysql_connector.errors.ProgrammingError as Err:
-            print("Something went wrong: {}".format(Err.msg))
+            print("{} {}".format(self.message, Err.msg))
 
     def disconnect(self):
         """
-        Terminar la conexión
+        End the connection
         """
         self.connection.close()
 
-    def fetch_all(self, sql):
+    def fetch_all(self, query):
         """
-        Obtener todos los registros del query que se pase
+        Get all the records of the query
         """
         try:
             self.connect()
-            self.cursor.execute(sql)
+            self.cursor.execute(query)
             result = self.cursor.fetchall()
             self.cursor.close()
             self.disconnect()
             return result
         except mysql_connector.Error as Err:
-            print("Something went wrong: {}".format(Err.msg))
+            print("{} {}".format(self.message, Err.msg))
 
     def query_execution(self, sql):
         """
-        Ejecute el query que te mande
+        Execute the query that is sent
         """
         try:
             self.connect()
@@ -65,18 +65,18 @@ class MonitorTelegram:
             self.cursor.close()
             self.disconnect()
         except mysql_connector.Error as Err:
-            print("Something went wrong: {}".format(Err.msg))
+            print("{} {}".format(self.message, Err.msg))
 
     def send_message(self, str_telegram, row_data):
         """
-        Envia el mensaje de telegram y manda el registro
-        a la base de datos que indica que ya fue notificado
+        Send the telegram message then send the registration
+        to the database indicating that it has already been notified
         """
         try:
             bot = telegram.Bot(token=self.token)
             is_message_sent = bot.sendMessage(chat_id=self.chat_id, text=str_telegram)
             if is_message_sent:
-                # si el mensaje fue enviado por el bot se registra en bd
+                # if the message was sent by the bot it is registered in bd
                 self.register_notification(row_data)
         except telegram.error.Unauthorized as msg_unauthorized:
             print("Token does not exist {}: ".format(msg_unauthorized))
@@ -87,9 +87,7 @@ class MonitorTelegram:
 
     def register_notification(self, row):
         """
-        Todo lo que se notifica con el bot de telegram
-        se registra en plugin_thold_log para mantener
-        un historico de lo notificado
+        everything notified is saved in its own history in the table plugin_telegram_bot
         """
         query = """INSERT INTO plugin_telegram_bot (description, plugin_thold_log_id) VALUES ('{}',{})""".format(
             row.get("description"), row.get("plugin_thold_log_id")
@@ -98,9 +96,8 @@ class MonitorTelegram:
 
     def start_execute(self):
         """
-        Obten lo notificado por el bot de telegram de la tabla
-        Query: Obten todos los registros de la tabla plugin_thold_log (cacti)
-        que no existan en la tabla plugin_telegram_bot (telegram bot)
+        Get all the records from the plugin_thold_log table (cacti)
+        that do not exist in the table plugin_telegram_bot (telegram bot)
         """
         query = (
             """SELECT plugin_thold_log.id, host.hostname, plugin_thold_log.description"""
@@ -108,7 +105,7 @@ class MonitorTelegram:
             """ WHERE plugin_thold_log.id NOT IN (SELECT plugin_thold_log_id FROM plugin_telegram_bot)"""
         )
         records = self.fetch_all(query)
-        # itera cada registro obtenido
+
         for record in records:
             to_telegram = "{} {}".format(record[1], record[2])
             to_row = {
