@@ -53,6 +53,6 @@
 */5 * * * * sh /path/to/virtualenv/telegrambot-cacti/execute.sh
 ```
 
-#### How do I create a bot?
+#### How do I create a bot? :sunglasses:
 
-[Create new bots with BotFather :sunglasses:](https://core.telegram.org/bots#6-botfather)
+[Create new bots with BotFather](https://core.telegram.org/bots#6-botfather)
