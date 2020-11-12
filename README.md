@@ -39,7 +39,7 @@
 [user@localhost~] ~/path/to/virtualenv/telegrambot-cacti (virtualenv) # python run_once.py
 [user@localhost~] ~/path/to/virtualenv/telegrambot-cacti (virtualenv) # deactivate
 [user@localhost~] ~/path/to/virtualenv/telegrambot-cacti (virtualenv) # cd ~
-[user@localhost~]#
+[user@localhost~]# #if you want to delete the run_once.py file you can
 ```
 
 #### Create new cron / Execute every five minutes like poller.php cacti
