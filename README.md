@@ -13,7 +13,7 @@
 
 #### Requirements
 
-- Linux (tested in RHEL and Centos)
+- Linux (tested in RHEL and Centos), i'm sure it works on debian and ubuntu as well as windows server (replace crontab with task scheduler)
 - python3.x
 - pip
 - Token Telegrambot
