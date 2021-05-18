@@ -3,6 +3,7 @@ import telegram
 import mysql.connector as mysql_connector
 
 from dotenv import load_dotenv
+from datetime import datetime
 
 
 class MonitorTelegram:
@@ -83,7 +84,9 @@ class MonitorTelegram:
         except telegram.error.BadRequest as chat_notfound:
             print("User ID or Group ID not found: {}".format(chat_notfound))
         except telegram.error.NetworkError:
-            print("Cant establish connection error Network")
+            time = datetime.now()
+            now = time.strftime("%d %B %Y - %H:%M:%S")
+            print("""{} - Can't establish connection error Network""".format(now))
 
     def register_notification(self, row):
         """
